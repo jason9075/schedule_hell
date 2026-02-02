@@ -2,6 +2,11 @@
 
 本專案是一個純前端 (Vanilla JS) 的門禁系統原型，旨在探索兩種截然不同的權限管理架構。
 
+## 🔗 線上演示 (Live Demo)
+
+- **V1: 嚴格互斥模型** -> [點擊體驗 (Demo)](https://jason9075.github.io/schedule_hell/)
+- **V2: 權重優先模型** -> [點擊體驗 (Demo)](https://jason9075.github.io/schedule_hell/index-v2.html)
+
 ## 🚀 快速開始 (Quick Start)
 
 本專案使用 **Nix** 管理開發環境。
