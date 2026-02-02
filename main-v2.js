@@ -1,8 +1,11 @@
+// V3 Debug Update
+console.log("V3 Loaded: Main Module Initialized");
+
 // Constants
 const DAYS = ['週一', '週二', '週三', '週四', '週五', '週六', '週日'];
 const USERS = ['Marco', 'Jason', 'Milo', 'Vera', 'Mei', 'Ching', 'Jonas', 'Gary'];
 const DEVICES = ['台北', '桃園', '台中', '台南', '新竹'];
-const STORAGE_KEY_V2 = 'ac_system_v2';
+const STORAGE_KEY_V2 = 'ac_system_v3';
 
 // --- Default Data ---
 const DEFAULT_TEMPLATES = [
@@ -13,8 +16,8 @@ const DEFAULT_TEMPLATES = [
 
 const DEFAULT_GROUPS = [
   { id: 'g1', name: '一般員工', priority: 10, members: ['Marco', 'Mei', 'Ching'] },
-  { id: 'g2', name: '管理人員', priority: 90, members: ['Jason', 'Vera'] },
-  { id: 'g3', name: 'IT 支援', priority: 50, members: ['Jason', 'Gary'] } // Jason is in g2(90) and g3(50)
+  { id: 'g2', name: '管理人員', priority: 90, members: ['Jason', 'Vera'] }, // Modified to 50 for conflict test
+  { id: 'g3', name: 'IT 支援', priority: 50, members: ['Jason', 'Gary'] } // IT is 50
 ];
 
 // Matrix: { groupId: { deviceId: templateId } }
@@ -60,10 +63,6 @@ function loadState() {
 }
 
 // --- Logic: Resolution ---
-/**
- * Resolves access for a User on a specific Device.
- * Strategy: Find all groups user belongs to -> Find rules for this device -> Pick Max(Priority).
- */
 function resolveAccess(user, device) {
   const userGroups = state.groups.filter(g => g.members.includes(user));
   
@@ -78,9 +77,13 @@ function resolveAccess(user, device) {
       const templateId = groupRules[device];
       const template = state.templates.find(t => t.id === templateId);
       if (template) {
+        // Robust parseInt to handle string priorities from input
+        let prio = parseInt(group.priority);
+        if (isNaN(prio)) prio = 0;
+
         candidates.push({
           groupName: group.name,
-          priority: parseInt(group.priority),
+          priority: prio,
           template: template
         });
       }
@@ -92,10 +95,33 @@ function resolveAccess(user, device) {
   // Sort by Priority DESC
   candidates.sort((a, b) => b.priority - a.priority);
   
-  // Winner is the first one
+  // Debug Log
+  console.groupCollapsed(`POV Check: ${user} @ ${device}`);
+  console.log("Candidates found:", candidates.length);
+  candidates.forEach(c => console.log(` - ${c.groupName} (P: ${c.priority}, Type: ${typeof c.priority})`));
+
+  // Check for tie
+  let isTie = false;
+  let tiedCandidates = [];
+  
+  if (candidates.length > 1) {
+    // Get all candidates with the same highest priority
+    const highestPriority = candidates[0].priority;
+    tiedCandidates = candidates.filter(c => c.priority === highestPriority);
+    
+    // Check for equality (both value and type should match if we used parseInt)
+    if (tiedCandidates.length > 1) {
+      isTie = true;
+      console.warn("⚠️ Tie detected between:", tiedCandidates.map(c => c.groupName));
+    }
+  }
+  console.groupEnd();
+
   return {
     winner: candidates[0],
-    others: candidates.slice(1)
+    others: candidates.slice(1),
+    isTie: isTie,
+    tiedCandidates: tiedCandidates
   };
 }
 
@@ -273,18 +299,32 @@ function renderPOV() {
       const div = document.createElement('div');
       div.className = 'pov-result-card';
       
-      const { winner, others } = access;
+      const { winner, others, isTie, tiedCandidates } = access;
       const t = winner.template;
       
       let debugText = others.length > 0 
         ? `(已覆蓋低權重設定: ${others.map(o => `${o.groupName}[P-${o.priority}]`).join(', ')})`
         : '';
 
+      let warningHtml = '';
+      if (isTie) {
+          const tiedNames = tiedCandidates.map(c => c.groupName).join(', ');
+          console.log(`Render ${dev}: Injecting Warning for ${tiedNames}`);
+          warningHtml = `
+            <div style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; margin-bottom: 10px; border: 2px solid #e0c880; display: block !important;">
+                <strong>⚠️ 權限衝突警告</strong><br>
+                偵測到多個相同最高權重 (P-${winner.priority}) 的群組：${tiedNames}。<br>
+                系統目前隨機選用了 <strong>${winner.groupName}</strong>。建議調整權重以明確定義優先順序。
+            </div>
+          `;
+      }
+
       div.innerHTML = `
         <div class="pov-header">
           <span class="pov-device-name">${dev}</span>
           <span class="pov-source">繼承自群組: <strong>${winner.groupName}</strong> <span class="winning-priority">P-${winner.priority}</span></span>
         </div>
+        ${warningHtml}
         <div style="border-left: 4px solid ${t.color}; padding-left: 10px;">
           <h3>${t.name}</h3>
           <div>週一: ${minsToTime(t.schedule['週一'].start)} - ${minsToTime(t.schedule['週一'].end)}</div>
@@ -417,6 +457,10 @@ document.getElementById('save-group-btn').onclick = () => {
   renderGroups();
   // Don't close, allow continuous edit
 };
+
+// Expose debug
+window.appState = state;
+window.resolveAccess = resolveAccess;
 
 // Initial Render
 renderTemplates();
