@@ -10,9 +10,13 @@ default:
 setup:
     npm install
 
-# Start local development server
+# Start local development server (V1)
 dev:
-    browser-sync start --server --files "." --port 8080
+    browser-sync start --server --files "." --port 8080 --index index.html
+
+# Start local development server (V2 - Priority Model)
+dev-v2:
+    browser-sync start --server --files "." --port 8081 --index index-v2.html
 
 # Clean the build directory
 clean:

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access Control (Priority Model)</title>
+  <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navigation Sidebar -->
+    <aside class="nav-sidebar">
+      <h1>AC System</h1>
+      <nav>
+        <button class="nav-btn active" data-tab="templates">1. Templates</button>
+        <button class="nav-btn" data-tab="groups">2. Groups & Members</button>
+        <button class="nav-btn" data-tab="rules">3. Access Rules</button>
+        <button class="nav-btn" data-tab="pov">4. User POV</button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content-area">
+      
+      <!-- VIEW 1: Templates -->
+      <section id="view-templates" class="view-section active">
+        <header class="section-header">
+          <h2>Time Templates</h2>
+          <button id="add-template-btn" class="btn primary">+ New Template</button>
+        </header>
+        <div class="template-list-container">
+          <ul id="template-list"></ul>
+        </div>
+        <!-- Template Editor (Hidden by default, shown when selected) -->
+        <div id="template-editor" class="panel hidden">
+          <h3>Edit Template</h3>
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="template-name-input">
+          </div>
+          <div class="form-group">
+             <label>Color</label>
+             <input type="color" id="template-color-input" value="#007bff">
+          </div>
+          <div id="template-schedule-editor">
+            <!-- Time Bars go here -->
+          </div>
+          <div class="panel-actions">
+            <button id="save-template-btn" class="btn primary">Save</button>
+            <button id="close-template-btn" class="btn secondary">Close</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: Groups -->
+      <section id="view-groups" class="view-section hidden">
+        <header class="section-header">
+          <h2>Groups & Priorities</h2>
+          <button id="add-group-btn" class="btn primary">+ New Group</button>
+        </header>
+        <div class="two-column-layout">
+          <div class="col-left">
+            <ul id="group-list"></ul>
+          </div>
+          <div class="col-right hidden" id="group-editor">
+            <div class="form-group">
+              <label>Group Name</label>
+              <input type="text" id="group-name-input">
+            </div>
+            <div class="form-group">
+              <label>Priority (1-100)</label>
+              <input type="number" id="group-priority-input" min="1" max="100" value="10">
+              <small>Higher number wins conflicts.</small>
+            </div>
+            <div class="form-group">
+              <label>Members</label>
+              <div id="group-member-list" class="checklist"></div>
+            </div>
+            <div class="panel-actions">
+              <button id="save-group-btn" class="btn primary">Save Group</button>
+              <button id="delete-group-btn" class="btn danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: Rules Matrix -->
+      <section id="view-rules" class="view-section hidden">
+        <header class="section-header">
+          <h2>Access Rules Matrix</h2>
+          <p>Assign Templates to Device-Group pairs.</p>
+        </header>
+        <div class="matrix-container">
+          <table id="rules-matrix">
+            <thead>
+              <tr>
+                <th>Device \ Group</th>
+                <!-- Group headers injected here -->
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Matrix rows injected here -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW 4: POV -->
+      <section id="view-pov" class="view-section hidden">
+        <header class="section-header">
+          <h2>User Point of View</h2>
+        </header>
+        <div class="pov-container">
+          <div class="form-group">
+            <label>Select User to Inspect</label>
+            <select id="pov-user-select"></select>
+          </div>
+          <hr>
+          <div id="pov-output">
+            <!-- Results -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="main-v2.js"></script>
+</body>
+</html>
