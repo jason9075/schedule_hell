@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access Control Planning Tool</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 1. Group Sidebar -->
+    <aside class="sidebar" id="group-sidebar">
+      <h2>Groups</h2>
+      <ul id="group-list">
+        <!-- Group items injected here -->
+      </ul>
+      <button id="add-group-btn" class="btn primary">+ New Group</button>
+    </aside>
+
+    <!-- Main Content Area (Form) -->
+    <main class="editor-area" id="editor-area" style="display: none;">
+      <header class="editor-header">
+        <div class="form-group">
+          <label for="group-name">Group Name</label>
+          <input type="text" id="group-name" placeholder="Enter group name">
+        </div>
+        <div class="actions">
+          <button id="pov-btn" class="btn secondary" style="margin-right: 10px;">POV</button>
+          <button id="save-btn" class="btn primary">Save Group</button>
+          <button id="delete-btn" class="btn danger">Delete</button>
+        </div>
+      </header>
+
+      <div class="editor-columns">
+        <!-- 2. User Selection -->
+        <section class="column user-selection">
+          <h3>Members</h3>
+          <div id="user-list" class="checklist">
+            <!-- User checkboxes injected here -->
+          </div>
+          <div id="conflict-message" class="conflict-alert hidden"></div>
+        </section>
+
+        <!-- 3. Device Config -->
+        <section class="column device-config">
+          <h3>Device Configuration</h3>
+          <div id="device-list" class="device-list">
+            <!-- Device config rows injected here -->
+          </div>
+        </section>
+      </div>
+    </main>
+    
+    <div id="empty-state" class="empty-state">
+      <p>Select a group to edit or create a new one.</p>
+    </div>
+  </div>
+
+  <!-- POV Modal -->
+  <div id="pov-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>User Access View</h2>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="pov-user-select">Select User:</label>
+          <select id="pov-user-select" style="width: 100%; padding: 8px; font-size: 1rem;">
+            <!-- Options injected by JS -->
+          </select>
+        </div>
+        <hr>
+        <div id="pov-results">
+          <!-- Access details injected here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
