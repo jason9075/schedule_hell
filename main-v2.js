@@ -1,20 +1,20 @@
 // Constants
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAYS = ['週一', '週二', '週三', '週四', '週五', '週六', '週日'];
 const USERS = ['Marco', 'Jason', 'Milo', 'Vera', 'Mei', 'Ching', 'Jonas', 'Gary'];
 const DEVICES = ['台北', '桃園', '台中', '台南', '新竹'];
 const STORAGE_KEY_V2 = 'ac_system_v2';
 
 // --- Default Data ---
 const DEFAULT_TEMPLATES = [
-  { id: 't1', name: 'Office Hours', color: '#28a745', schedule: createWeekSchedule(9*60, 18*60) },
-  { id: 't2', name: '24/7 Access', color: '#007bff', schedule: createWeekSchedule(0, 1439) },
-  { id: 't3', name: 'Morning Shift', color: '#ffc107', schedule: createWeekSchedule(6*60, 14*60) }
+  { id: 't1', name: '標準工時', color: '#28a745', schedule: createWeekSchedule(9*60, 18*60) },
+  { id: 't2', name: '全天候通行', color: '#007bff', schedule: createWeekSchedule(0, 1439) },
+  { id: 't3', name: '早班', color: '#ffc107', schedule: createWeekSchedule(6*60, 14*60) }
 ];
 
 const DEFAULT_GROUPS = [
-  { id: 'g1', name: 'General Staff', priority: 10, members: ['Marco', 'Mei', 'Ching'] },
-  { id: 'g2', name: 'Managers', priority: 90, members: ['Jason', 'Vera'] },
-  { id: 'g3', name: 'IT Support', priority: 50, members: ['Jason', 'Gary'] } // Jason is in g2(90) and g3(50)
+  { id: 'g1', name: '一般員工', priority: 10, members: ['Marco', 'Mei', 'Ching'] },
+  { id: 'g2', name: '管理人員', priority: 90, members: ['Jason', 'Vera'] },
+  { id: 'g3', name: 'IT 支援', priority: 50, members: ['Jason', 'Gary'] } // Jason is in g2(90) and g3(50)
 ];
 
 // Matrix: { groupId: { deviceId: templateId } }
@@ -112,7 +112,7 @@ function renderTemplates() {
     card.innerHTML = `
       <div class="template-card-bar" style="background:${t.color}"></div>
       <h4>${t.name}</h4>
-      <small>${minsToTime(t.schedule['Mon'].start)} - ${minsToTime(t.schedule['Mon'].end)} (Mon)</small>
+      <small>${minsToTime(t.schedule['週一'].start)} - ${minsToTime(t.schedule['週一'].end)} (週一)</small>
     `;
     card.onclick = () => openTemplateEditor(t.id);
     list.appendChild(card);
@@ -218,7 +218,7 @@ function renderRulesMatrix() {
       // Options: Empty + Templates
       const optEmpty = document.createElement('option');
       optEmpty.value = '';
-      optEmpty.text = '--';
+      optEmpty.text = '---';
       select.appendChild(optEmpty);
       
       state.templates.forEach(t => {
@@ -277,17 +277,17 @@ function renderPOV() {
       const t = winner.template;
       
       let debugText = others.length > 0 
-        ? `(Defeated: ${others.map(o => `${o.groupName}[P-${o.priority}]`).join(', ')})`
+        ? `(已覆蓋低權重設定: ${others.map(o => `${o.groupName}[P-${o.priority}]`).join(', ')})`
         : '';
 
       div.innerHTML = `
         <div class="pov-header">
           <span class="pov-device-name">${dev}</span>
-          <span class="pov-source">Via Group: <strong>${winner.groupName}</strong> <span class="winning-priority">P-${winner.priority}</span></span>
+          <span class="pov-source">繼承自群組: <strong>${winner.groupName}</strong> <span class="winning-priority">P-${winner.priority}</span></span>
         </div>
         <div style="border-left: 4px solid ${t.color}; padding-left: 10px;">
           <h3>${t.name}</h3>
-          <div>Mon: ${minsToTime(t.schedule.Mon.start)} - ${minsToTime(t.schedule.Mon.end)}</div>
+          <div>週一: ${minsToTime(t.schedule['週一'].start)} - ${minsToTime(t.schedule['週一'].end)}</div>
         </div>
         <div class="priority-debug">${debugText}</div>
       `;
@@ -296,7 +296,7 @@ function renderPOV() {
   });
   
   if (container.innerHTML === '') {
-    container.innerHTML = '<div class="no-access">No access rights found for this user.</div>';
+    container.innerHTML = '<div class="no-access">此使用者目前無任何通行權限。</div>';
   }
 }
 
@@ -389,7 +389,7 @@ document.getElementById('add-template-btn').onclick = () => {
   const newId = generateId();
   state.templates.push({
     id: newId,
-    name: 'New Template',
+    name: '新模板',
     color: '#666666',
     schedule: createWeekSchedule(540, 1080)
   });
@@ -401,7 +401,7 @@ document.getElementById('add-group-btn').onclick = () => {
   const newId = generateId();
   state.groups.push({
     id: newId,
-    name: 'New Group',
+    name: '新群組',
     priority: 10,
     members: []
   });

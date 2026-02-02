@@ -1,40 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Access Control Planning Tool</title>
+  <title>門禁權限規劃工具</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="app-container">
     <!-- 1. Group Sidebar -->
     <aside class="sidebar" id="group-sidebar">
-      <h2>Groups</h2>
+      <h2>群組列表</h2>
       <ul id="group-list">
         <!-- Group items injected here -->
       </ul>
-      <button id="add-group-btn" class="btn primary">+ New Group</button>
+      <button id="add-group-btn" class="btn primary">+ 新增群組</button>
     </aside>
 
     <!-- Main Content Area (Form) -->
     <main class="editor-area" id="editor-area" style="display: none;">
       <header class="editor-header">
         <div class="form-group">
-          <label for="group-name">Group Name</label>
-          <input type="text" id="group-name" placeholder="Enter group name">
+          <label for="group-name">群組名稱</label>
+          <input type="text" id="group-name" placeholder="輸入群組名稱">
         </div>
         <div class="actions">
-          <button id="pov-btn" class="btn secondary" style="margin-right: 10px;">POV</button>
-          <button id="save-btn" class="btn primary">Save Group</button>
-          <button id="delete-btn" class="btn danger">Delete</button>
+          <button id="pov-btn" class="btn secondary" style="margin-right: 10px;">模擬視角 (POV)</button>
+          <button id="save-btn" class="btn primary">儲存設定</button>
+          <button id="delete-btn" class="btn danger">刪除群組</button>
         </div>
       </header>
 
       <div class="editor-columns">
         <!-- 2. User Selection -->
         <section class="column user-selection">
-          <h3>Members</h3>
+          <h3>成員列表</h3>
           <div id="user-list" class="checklist">
             <!-- User checkboxes injected here -->
           </div>
@@ -43,7 +43,7 @@
 
         <!-- 3. Device Config -->
         <section class="column device-config">
-          <h3>Device Configuration</h3>
+          <h3>裝置權限設定</h3>
           <div id="device-list" class="device-list">
             <!-- Device config rows injected here -->
           </div>
@@ -52,7 +52,7 @@
     </main>
     
     <div id="empty-state" class="empty-state">
-      <p>Select a group to edit or create a new one.</p>
+      <p>請從左側選擇群組進行編輯，或建立新群組。</p>
     </div>
   </div>
 
@@ -60,12 +60,12 @@
   <div id="pov-modal" class="modal hidden">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>User Access View</h2>
+        <h2>使用者權限檢視</h2>
         <span class="close-modal">&times;</span>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label for="pov-user-select">Select User:</label>
+          <label for="pov-user-select">選擇使用者：</label>
           <select id="pov-user-select" style="width: 100%; padding: 8px; font-size: 1rem;">
             <!-- Options injected by JS -->
           </select>

@@ -1,5 +1,5 @@
 // Constants
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAYS = ['週一', '週二', '週三', '週四', '週五', '週六', '週日'];
 const STORAGE_KEY = 'access_control_state';
 
 // Default State (Fallback)
@@ -9,12 +9,38 @@ const DEFAULT_STATE = {
   groups: [
     {
       id: "default-all-day",
-      name: "全天",
+      name: "台北全天候人員",
       members: ['Marco', 'Jason'],
       // Structure: { DeviceName: { Day: { start: mins, end: mins } } }
       configs: {
         "台北": createDefaultWeekConfig(),
-        "桃園": createDefaultWeekConfig()
+      }
+    },
+    {
+      id: "morning-shift",
+      name: "早班人員 (08:00-16:00)",
+      members: ['Milo', 'Vera'],
+      configs: {
+        "台北": createWeekConfig(480, 960),
+        "桃園": createWeekConfig(480, 960)
+      }
+    },
+    {
+      id: "night-shift",
+      name: "晚班人員 (16:00-24:00)",
+      members: ['Mei'],
+      configs: {
+        "台北": createWeekConfig(960, 1439), // 16:00 - 23:59
+        "桃園": createWeekConfig(960, 1439)
+      }
+    },
+    {
+      id: "hsinchu-eng",
+      name: "新竹工程部",
+      members: ['Ching', 'Jonas'],
+      configs: {
+        "新竹": createDefaultWeekConfig(),
+        "台北": createWeekConfig(540, 1080) // 09:00 - 18:00
       }
     }
   ]
@@ -50,6 +76,14 @@ function createDefaultWeekConfig() {
   const config = {};
   DAYS.forEach(day => {
     config[day] = { start: 0, end: 1439 }; // 00:00 to 23:59
+  });
+  return config;
+}
+
+function createWeekConfig(start, end, days = DAYS) {
+  const config = {};
+  days.forEach(day => {
+    config[day] = { start, end };
   });
   return config;
 }
@@ -156,7 +190,7 @@ function renderUserList(currentGroup, activeDeviceKeys) {
       const icon = document.createElement('span');
       icon.className = 'conflict-icon';
       icon.textContent = '⚠️';
-      icon.title = `Conflict in "${conflictResult.conflictingGroup}"`;
+      icon.title = `權限衝突：已在 "${conflictResult.conflictingGroup}" 中設定`;
       label.appendChild(icon);
     }
 
@@ -440,7 +474,7 @@ function validateAndRenderConflicts() {
   if (hasUserConflict) {
     elements.saveBtn.disabled = true;
     elements.conflictMessage.classList.remove('hidden');
-    elements.conflictMessage.textContent = "Cannot save: User conflicts detected.";
+    elements.conflictMessage.textContent = "無法儲存：偵測到使用者權限衝突。";
   } else {
     elements.saveBtn.disabled = false;
     elements.conflictMessage.classList.add('hidden');
@@ -468,7 +502,7 @@ function openPOVModal() {
   elements.povModal.classList.remove('hidden');
   
   // Populate User Select
-  elements.povUserSelect.innerHTML = '<option value="">-- Select a User --</option>';
+  elements.povUserSelect.innerHTML = '<option value="">--- 請選擇使用者 ---</option>';
   state.users.forEach(user => {
     const option = document.createElement('option');
     option.value = user;
@@ -504,7 +538,7 @@ function renderPOV(userId) {
   });
 
   if (accessList.length === 0) {
-    elements.povResults.innerHTML = `<div class="no-access">No access configured for ${userId}.</div>`;
+    elements.povResults.innerHTML = `<div class="no-access">使用者 ${userId} 目前沒有任何權限設定。</div>`;
     return;
   }
 
@@ -538,7 +572,7 @@ function renderPOV(userId) {
         
         // Simple visual check: is it full day?
         if (dayConfig.start === 0 && dayConfig.end === 1439) {
-          timeRange.textContent = "All Day (00:00 - 23:59)";
+          timeRange.textContent = "全天 (00:00 - 23:59)";
         } else {
           timeRange.textContent = `${startStr} - ${endStr}`;
         }
@@ -561,14 +595,14 @@ function generateDefaultName() {
   
   while (true) {
     const char = String.fromCharCode(suffix);
-    const name = `Group ${char}`;
+    const name = `群組 ${char}`;
     if (!existingNames.includes(name)) {
       return name;
     }
     suffix++;
     // Fallback if we run out of letters (though unlikely for this scope)
     if (suffix > 'Z'.charCodeAt(0)) {
-        return `Group ${Date.now()}`;
+        return `群組 ${Date.now()}`;
     }
   }
 }
@@ -585,7 +619,7 @@ elements.addGroupBtn.addEventListener('click', () => {
 });
 
 elements.deleteBtn.addEventListener('click', () => {
-  if (!confirm("Delete group?")) return;
+  if (!confirm("確定要刪除此群組嗎？")) return;
   state.groups = state.groups.filter(g => g.id !== currentEditingGroupId);
   saveState();
   currentEditingGroupId = null;

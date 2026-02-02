@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Access Control (Priority Model)</title>
+  <title>門禁管理 (權重模型)</title>
   <link rel="stylesheet" href="style-v2.css">
 </head>
 <body>
   <div class="app-container">
     <!-- Navigation Sidebar -->
     <aside class="nav-sidebar">
-      <h1>AC System</h1>
+      <h1>門禁管理系統</h1>
       <nav>
-        <button class="nav-btn active" data-tab="templates">1. Templates</button>
-        <button class="nav-btn" data-tab="groups">2. Groups & Members</button>
-        <button class="nav-btn" data-tab="rules">3. Access Rules</button>
-        <button class="nav-btn" data-tab="pov">4. User POV</button>
+        <button class="nav-btn active" data-tab="templates">1. 時間模板</button>
+        <button class="nav-btn" data-tab="groups">2. 群組與成員</button>
+        <button class="nav-btn" data-tab="rules">3. 授權規則</button>
+        <button class="nav-btn" data-tab="pov">4. 使用者模擬</button>
       </nav>
     </aside>
 
@@ -25,29 +25,29 @@
       <!-- VIEW 1: Templates -->
       <section id="view-templates" class="view-section active">
         <header class="section-header">
-          <h2>Time Templates</h2>
-          <button id="add-template-btn" class="btn primary">+ New Template</button>
+          <h2>時間模板管理</h2>
+          <button id="add-template-btn" class="btn primary">+ 新增模板</button>
         </header>
         <div class="template-list-container">
           <ul id="template-list"></ul>
         </div>
         <!-- Template Editor (Hidden by default, shown when selected) -->
         <div id="template-editor" class="panel hidden">
-          <h3>Edit Template</h3>
+          <h3>編輯模板</h3>
           <div class="form-group">
-            <label>Name</label>
+            <label>模板名稱</label>
             <input type="text" id="template-name-input">
           </div>
           <div class="form-group">
-             <label>Color</label>
+             <label>標籤顏色</label>
              <input type="color" id="template-color-input" value="#007bff">
           </div>
           <div id="template-schedule-editor">
             <!-- Time Bars go here -->
           </div>
           <div class="panel-actions">
-            <button id="save-template-btn" class="btn primary">Save</button>
-            <button id="close-template-btn" class="btn secondary">Close</button>
+            <button id="save-template-btn" class="btn primary">儲存</button>
+            <button id="close-template-btn" class="btn secondary">關閉</button>
           </div>
         </div>
       </section>
@@ -55,8 +55,8 @@
       <!-- VIEW 2: Groups -->
       <section id="view-groups" class="view-section hidden">
         <header class="section-header">
-          <h2>Groups & Priorities</h2>
-          <button id="add-group-btn" class="btn primary">+ New Group</button>
+          <h2>群組權重管理</h2>
+          <button id="add-group-btn" class="btn primary">+ 新增群組</button>
         </header>
         <div class="two-column-layout">
           <div class="col-left">
@@ -64,21 +64,21 @@
           </div>
           <div class="col-right hidden" id="group-editor">
             <div class="form-group">
-              <label>Group Name</label>
+              <label>群組名稱</label>
               <input type="text" id="group-name-input">
             </div>
             <div class="form-group">
-              <label>Priority (1-100)</label>
+              <label>優先權重 (1-100)</label>
               <input type="number" id="group-priority-input" min="1" max="100" value="10">
-              <small>Higher number wins conflicts.</small>
+              <small>數字越大優先權越高 (當規則衝突時以此為準)</small>
             </div>
             <div class="form-group">
-              <label>Members</label>
+              <label>群組成員</label>
               <div id="group-member-list" class="checklist"></div>
             </div>
             <div class="panel-actions">
-              <button id="save-group-btn" class="btn primary">Save Group</button>
-              <button id="delete-group-btn" class="btn danger">Delete</button>
+              <button id="save-group-btn" class="btn primary">儲存群組</button>
+              <button id="delete-group-btn" class="btn danger">刪除</button>
             </div>
           </div>
         </div>
@@ -87,14 +87,14 @@
       <!-- VIEW 3: Rules Matrix -->
       <section id="view-rules" class="view-section hidden">
         <header class="section-header">
-          <h2>Access Rules Matrix</h2>
-          <p>Assign Templates to Device-Group pairs.</p>
+          <h2>授權規則矩陣</h2>
+          <p>設定各群組在不同裝置上套用的時間模板。</p>
         </header>
         <div class="matrix-container">
           <table id="rules-matrix">
             <thead>
               <tr>
-                <th>Device \ Group</th>
+                <th>裝置 \ 群組</th>
                 <!-- Group headers injected here -->
               </tr>
             </thead>
@@ -108,11 +108,11 @@
       <!-- VIEW 4: POV -->
       <section id="view-pov" class="view-section hidden">
         <header class="section-header">
-          <h2>User Point of View</h2>
+          <h2>使用者權限模擬 (POV)</h2>
         </header>
         <div class="pov-container">
           <div class="form-group">
-            <label>Select User to Inspect</label>
+            <label>選擇要檢查的使用者</label>
             <select id="pov-user-select"></select>
           </div>
           <hr>
