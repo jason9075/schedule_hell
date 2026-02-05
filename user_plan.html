@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Plan Configuration</title>
+  <link rel="stylesheet" href="user_plan.css">
+</head>
+<body>
+
+  <nav id="sideNav" class="side-nav">
+    <a href="#" class="nav-item" data-page="time-setting">時間設定</a>
+    <a href="#" class="nav-item" data-page="weekly-plan">週計畫</a>
+    <a href="#" class="nav-item" data-page="special-plan">特殊計畫</a>
+    <a href="#" class="nav-item" data-page="special-period">特殊期</a>
+    <a href="#" class="nav-item" data-page="simulation">使用者模擬</a>
+  </nav>
+
+  <main id="mainContent" class="main-content">
+    <div id="page-time-setting" class="page">
+      <h1>時間設定</h1>
+      <button class="btn" id="addTimeSettingBtn">＋ 新增時間設定</button>
+
+      <div id="timeSettingList" class="plan-list-container">
+        <!-- Time settings will be dynamically rendered here -->
+      </div>
+
+      <div id="timeSettingModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <h2 id="timeSettingModalTitle">新增時間設定</h2>
+          <form id="timeSettingForm">
+            <input type="hidden" id="timeSettingId">
+            <div class="form-group">
+              <label for="timeSettingName">設定名稱：</label>
+              <input type="text" id="timeSettingName" required>
+            </div>
+            <div class="form-group">
+              <label for="weeklyPlanSelect">選擇週計畫 (擇一):</label>
+              <select id="weeklyPlanSelect" required>
+                <!-- Options will be rendered here -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label>選擇特殊計畫 (最多4個):</label>
+              <div id="specialPlanSelection" class="selection-list">
+                <!-- Checkboxes for special plans will be rendered here -->
+              </div>
+            </div>
+            <button type="submit" class="btn">儲存</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="page-weekly-plan" class="page" style="display: none;">
+      <h1>週計畫管理</h1>
+      <button class="btn" id="addWeeklyPlanBtn">＋ 新增週計畫</button>
+      
+      <div id="weeklyPlanList" class="plan-list-container">
+        <!-- Weekly plans will be dynamically rendered here -->
+      </div>
+
+      <div id="weeklyPlanModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <h2 id="weeklyPlanModalTitle">新增週計畫</h2>
+          <form id="weeklyPlanForm">
+            <input type="hidden" id="weeklyPlanId">
+            <div class="form-group">
+              <label for="weeklyPlanName">計畫名稱：</label>
+              <input type="text" id="weeklyPlanName" required>
+            </div>
+            <div id="weeklyPlanTimeSelector" class="time-selector-v2">
+              <!-- New time selector will be rendered here -->
+            </div>
+            <button type="submit" class="btn">儲存</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="page-special-plan" class="page" style="display: none;">
+      <h1>特殊計畫管理</h1>
+      <button class="btn" id="addSpecialPlanBtn">＋ 新增特殊計畫</button>
+
+      <div id="specialPlanList" class="plan-list-container">
+        <!-- Special plans will be dynamically rendered here -->
+      </div>
+
+      <div id="specialPlanModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <h2 id="specialPlanModalTitle">新增特殊計畫</h2>
+          <form id="specialPlanForm">
+            <input type="hidden" id="specialPlanId">
+            <div class="form-group">
+              <label for="specialPlanName">計畫名稱：</label>
+              <input type="text" id="specialPlanName" required>
+            </div>
+            <div class="form-group">
+              <label>選擇特殊期 (最多16個):</label>
+              <div id="specialPeriodSelection" class="selection-list">
+                <!-- Checkboxes for special periods will be rendered here -->
+              </div>
+            </div>
+            <button type="submit" class="btn">儲存</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="page-special-period" class="page" style="display: none;">
+      <h1>特殊期管理</h1>
+      <button class="btn" id="addSpecialPeriodBtn">＋ 新增特殊期</button>
+
+      <div id="specialPeriodList" class="plan-list-container">
+        <!-- Special periods will be dynamically rendered here -->
+      </div>
+
+      <div id="specialPeriodModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <h2 id="specialPeriodModalTitle">新增特殊期</h2>
+          <form id="specialPeriodForm">
+            <input type="hidden" id="specialPeriodId">
+            <div class="form-group">
+              <label for="specialPeriodName">名稱：</label>
+              <input type="text" id="specialPeriodName" required>
+            </div>
+            <div class="form-group">
+              <label for="specialPeriodStart">開始日期：</label>
+              <input type="date" id="specialPeriodStart" required>
+            </div>
+            <div class="form-group">
+              <label for="specialPeriodEnd">結束日期：</label>
+              <input type="date" id="specialPeriodEnd" required>
+            </div>
+            <div id="specialPeriodTimeSelector" class="time-selector-v2">
+              <!-- New V2 time selector will be rendered here -->
+            </div>
+            <button type="submit" class="btn">儲存</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="page-simulation" class="page" style="display: none;">
+      <h1>使用者模擬</h1>
+      <div class="simulation-form">
+        <div class="form-group">
+          <label for="simulationTimeSetting">選擇一個時間設定來模擬：</label>
+          <select id="simulationTimeSetting"></select>
+        </div>
+        <div class="form-group">
+          <label for="simulationDateTime">選擇模擬的日期與時間：</label>
+          <input type="datetime-local" id="simulationDateTime">
+        </div>
+        <button id="runSimulationBtn" class="btn">開始模擬</button>
+      </div>
+      <div id="simulationResult" class="simulation-result" style="display: none;">
+        <h2>模擬結果</h2>
+        <p id="resultText"></p>
+        <p id="reasonText"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="user_plan.js"></script>
+</body>
+</html>

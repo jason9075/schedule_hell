@@ -1,0 +1,380 @@
+
+/* Basic Layout */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  height: 100vh;
+  background-color: #f4f7f6;
+}
+
+.side-nav {
+  width: 200px;
+  background-color: #2c3e50;
+  color: white;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Navigation */
+.nav-item {
+  padding: 15px 20px;
+  color: #ecf0f1;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+  background-color: #34495e;
+}
+
+.nav-item.active {
+  background-color: #e67e22;
+  font-weight: bold;
+}
+
+/* Page Content */
+.page {
+  display: none; /* Hidden by default */
+}
+
+.page.active {
+  display: block; /* Shown when active */
+}
+
+h1 {
+  color: #2c3e50;
+  border-bottom: 2px solid #e67e22;
+  padding-bottom: 10px;
+}
+
+/* --- Components --- */
+
+.btn {
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #d35400;
+}
+
+.plan-list-container {
+  margin-top: 20px;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.close-btn {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Time Selector */
+.time-selector .day-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.time-selector .day-label {
+  width: 80px;
+  font-weight: bold;
+}
+
+.time-selector .hour-bar {
+  display: flex;
+  flex-grow: 1;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.time-selector .hour-block {
+  flex-grow: 1;
+  height: 25px;
+  background-color: #ecf0f1;
+  border-left: 1px solid #bdc3c7;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.time-selector .hour-block:first-child {
+  border-left: none;
+}
+
+.time-selector .hour-block.selected {
+  background-color: #27ae60;
+}
+
+/* --- New Time Selector (v2) --- */
+.time-selector-v2 .day-row-v2 {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.time-selector-v2 .day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.time-selector-v2 .day-label-v2 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.time-selector-v2 .summary-bar-container {
+  flex-grow: 1;
+  margin: 0 15px;
+  /* Add height to ensure container is visible even if bar is empty */
+  height: 25px; 
+}
+
+.time-selector-v2 .edit-day-btn {
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.time-selector-v2 .day-editor {
+  display: none; /* Hidden by default */
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #ccc;
+}
+
+.time-selector-v2 .day-editor.open {
+  display: block;
+}
+
+.time-selector-v2 .slot-bar,
+.time-selector-v2 .union-bar {
+  position: relative;
+  height: 25px;
+  background-color: #ecf0f1;
+  border-radius: 4px;
+  border: 1px solid #bdc3c7;
+  margin-bottom: 8px;
+}
+
+.time-selector-v2 .bar-handle {
+  position: absolute;
+  top: -4px;
+  width: 10px;
+  height: 33px;
+  background-color: #3498db;
+  border: 1px solid #2980b9;
+  border-radius: 3px;
+  cursor: ew-resize;
+  z-index: 10;
+}
+
+.time-selector-v2 .bar-handle.start {
+  left: 0;
+}
+
+.time-selector-v2 .bar-handle.end {
+  right: 0;
+}
+
+.time-selector-v2 .bar-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background-color: #27ae60;
+}
+
+.time-selector-v2 .time-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #7f8c8d;
+  margin-left: -2%;
+  margin-right: -2%;
+}
+.time-selector-v2 .time-scale span {
+  width: 4.166%; /* 100 / 24 */
+  text-align: center;
+}
+
+.union-bar {
+  background-color: #fce3d3; /* A different background for the union bar */
+}
+
+/* Plan Card Styles */
+.plan-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.plan-card h3 {
+  margin: 0;
+  color: #34495e;
+}
+
+.card-actions button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #3498db;
+  color: white;
+  border: 1px solid #2980b9;
+}
+
+.btn-edit:hover {
+  background-color: #2980b9;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+  border: 1px solid #c0392b;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+/* --- Input fields in modals --- */
+.form-group input[type="text"],
+.form-group input[type="date"] {
+  width: 95%;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* Selection List for Modals */
+.selection-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.selection-list label {
+  display: block;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: white;
+}
+
+/* Simulation Page Styles */
+.simulation-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.simulation-result {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.simulation-result h2 {
+  margin-top: 0;
+}
+
+#resultText {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#resultText.granted {
+  color: #27ae60;
+}
+
+#resultText.denied {
+  color: #e74c3c;
+}
